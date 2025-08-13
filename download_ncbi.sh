@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+# Author: Kristina K. Gagalova
+# Description: simple script to download genomes from NCBI
+
 ### Config / usage
 URL='https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/datasets'
 INPUT_TSV="${1:-assemblies.tsv}"
