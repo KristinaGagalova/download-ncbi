@@ -8,7 +8,7 @@ set -Eeuo pipefail
 URL='https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/datasets'
 INPUT_TSV="${1:-assemblies.tsv}"
 JOBS="${2:-4}"
-INCLUDES="genome,gff3,protein,cds"   # change if you want fewer artifacts
+INCLUDES="genome"   # change if you want fewer artifacts
 DATASETS_BIN="./datasets"
 
 usage() {
@@ -82,7 +82,7 @@ fi
 
 ### Download each accession to its own ZIP (idempotent: skip if ZIP exists)
 echo "[*] Downloading $(wc -l < "$ACC_LIST") accessions with $JOBS parallel jobs..."
-parallel --bar -j "$JOBS" --joblog logs/parallel_jobs.tsv --halt now,fail=1 \
+parallel --bar -j "$JOBS" --joblog logs/parallel_jobs.tsv --retries 3 --halt now,fail=3 \
   'if [[ ! -s zips/{1}.zip ]]; then
       echo "[download] {1}"
       '"$DATASETS_BIN"' download genome accession {1} \
